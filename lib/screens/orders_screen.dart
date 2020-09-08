@@ -17,15 +17,14 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
   @override
   void initState() {
-    Future.delayed(Duration.zero).then((_) async {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<Orders>(context, listen: false).fetchAndSetOrdrs();
+    _isLoading = true;
+
+    Provider.of<Orders>(context, listen: false).fetchAndSetOrdrs().then((_) {
       setState(() {
         _isLoading = false;
       });
     });
+
     super.initState();
   }
 
@@ -38,7 +37,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
       ),
       drawer: AppDrawer(),
       body: _isLoading
-          ? CircularProgressIndicator()
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
           : ListView.builder(
               itemCount: orderData.orders.length,
               itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
