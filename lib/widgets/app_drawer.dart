@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shoppingcart/screens/user_products_screen.dart';
+import 'package:provider/provider.dart';
+import '../screens/user_products_screen.dart';
 import '../screens/orders_screen.dart';
+import '../provider/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -42,6 +44,20 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.of(context)
                   .pushReplacementNamed(UserProductsScreen.routeName);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text(
+              'Log out',
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed('/');
+              // clear deep nav when log out
+
+              Provider.of<Auth>(context, listen: false).logout();
             },
           ),
         ],
