@@ -155,7 +155,7 @@ class Products with ChangeNotifier {
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
       notifyListeners();
-      throw HttpExpcetion('Cloud not delete product.');
+      throw HttpException('Cloud not delete product.');
     }
 
     existingProduct = null;

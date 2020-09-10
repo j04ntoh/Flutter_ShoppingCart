@@ -1,8 +1,9 @@
-class HttpExpcetion implements Exception {
+class HttpException implements Exception {
   final String message;
-  HttpExpcetion(this.message);
+  HttpException(this.message);
 
   String toString() {
-    return super.toString();
+    return message;
+    //  return super.toString();
   }
 }
