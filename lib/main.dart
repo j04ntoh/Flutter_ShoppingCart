@@ -15,6 +15,7 @@ import './provider/auth.dart';
 import './provider/products.dart';
 import './provider/cart.dart';
 import './provider/orders.dart';
+import './helpers/custom_route.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,15 +49,18 @@ class MyApp extends StatelessWidget {
         builder: (ctx, auth, _) => MaterialApp(
           title: 'Timberland',
           theme: ThemeData(
-            primarySwatch: Colors.orange,
-            accentColor: Colors.deepOrange,
-            fontFamily: 'Lato',
-            textTheme: TextTheme(
-              bodyText1: TextStyle(
-                color: Colors.white,
+              primarySwatch: Colors.orange,
+              accentColor: Colors.deepOrange,
+              fontFamily: 'Lato',
+              textTheme: TextTheme(
+                bodyText1: TextStyle(
+                  color: Colors.white,
+                ),
               ),
-            ),
-          ),
+              pageTransitionsTheme: PageTransitionsTheme(builders: {
+                TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                TargetPlatform.android: CustomPageTransitionBuilder(),
+              })),
           home: auth.isAuth
               ? ProductOverviewScreen()
               : FutureBuilder(

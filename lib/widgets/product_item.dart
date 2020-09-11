@@ -23,52 +23,58 @@ class ProductItem extends StatelessWidget {
             arguments: product.id,
           );
         },
-        child: GridTile(
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-          footer: GridTileBar(
-            backgroundColor: Colors.black87,
-            leading: Consumer<Product>(
-              builder: (ctx, product, _) => IconButton(
-                icon: Icon(
-                  product.isFavourite ? Icons.favorite : Icons.favorite_border,
-                  color: Theme.of(context).accentColor,
+        child: Hero(
+          tag: product.id,
+          child: GridTile(
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            ),
+            footer: GridTileBar(
+              backgroundColor: Colors.black87,
+              leading: Consumer<Product>(
+                builder: (ctx, product, _) => IconButton(
+                  icon: Icon(
+                    product.isFavourite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  onPressed: () {
+                    product.toggleFavouriteStatus(
+                      authData.token,
+                      authData.userId,
+                    );
+                  },
                 ),
-                onPressed: () {
-                  product.toggleFavouriteStatus(
-                    authData.token,
-                    authData.userId,
-                  );
-                },
               ),
+              title: Text(
+                product.title,
+                textAlign: TextAlign.center,
+              ),
+              trailing: IconButton(
+                  icon: Icon(
+                    Icons.shopping_cart,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  onPressed: () {
+                    cart.addItem(product.id, product.price, product.title);
+                    //
+                    Scaffold.of(context).hideCurrentSnackBar();
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text('Added item to cart.'),
+                      duration: Duration(seconds: 2),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          print("predssed undo");
+                          cart.removeSingleItem(product.id);
+                        },
+                      ),
+                    ));
+                  }),
             ),
-            title: Text(
-              product.title,
-              textAlign: TextAlign.center,
-            ),
-            trailing: IconButton(
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: Theme.of(context).accentColor,
-                ),
-                onPressed: () {
-                  cart.addItem(product.id, product.price, product.title);
-                  //
-                  Scaffold.of(context).hideCurrentSnackBar();
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Text('Added item to cart.'),
-                    duration: Duration(seconds: 2),
-                    action: SnackBarAction(
-                      label: 'UNDO',
-                      onPressed: () {
-                        print("predssed undo");
-                        cart.removeSingleItem(product.id);
-                      },
-                    ),
-                  ));
-                }),
           ),
         ),
       ),
